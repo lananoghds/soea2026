@@ -5,6 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import type { Platform } from "@/types/dashboard";
 import { OverviewDashboard } from "./overview-dashboard";
+import soeaLogo from "@/assets/Logo_Soea_Colorida.png.asset.json";
 
 const navigation = [
   { label: "Visão Geral", icon: LayoutDashboard }, { label: "Conversas", icon: MessageSquareText }, { label: "Sentimento", icon: Activity },
@@ -13,11 +14,9 @@ const navigation = [
 const platforms: Platform[] = ["Todas", "Instagram", "X", "Facebook", "YouTube", "LinkedIn", "Notícias"];
 
 function Brand() {
-  const [imageFailed, setImageFailed] = useState(false);
   return <div className="flex min-w-0 items-center gap-3">
-    {!imageFailed ? <img src="/assets/logo-soea.png" onError={() => setImageFailed(true)} alt="81ª SOEA" className="h-11 w-auto max-w-28 object-contain" /> :
-      <div className="flex h-11 w-14 shrink-0 flex-col items-center justify-center rounded-md bg-primary text-primary-foreground"><span className="text-[9px] font-bold leading-none">81ª</span><span className="text-base font-extrabold leading-none">SOEA</span></div>}
-    <div className="min-w-0"><p className="truncate text-sm font-extrabold text-foreground sm:text-base">Monitoramento da 81ª SOEA</p><p className="truncate text-xs text-muted-foreground">Social Listening e Performance Digital</p></div>
+    <div className="grid h-14 w-16 shrink-0 place-items-center rounded-md bg-card p-1"><img src={soeaLogo.url} alt="81ª SOEA" className="h-full w-full object-contain" /></div>
+    <div className="min-w-0"><p className="truncate text-sm font-extrabold text-foreground sm:text-base">81ª SOEA</p><p className="truncate text-xs text-muted-foreground">Social Listening e Performance Digital</p></div>
   </div>;
 }
 
@@ -43,7 +42,7 @@ export function DashboardShell() {
       <header className="sticky top-0 z-30 border-b bg-card/95 backdrop-blur">
         <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 px-4 py-3 lg:px-7">
           <Button variant="outline" size="icon" onClick={() => setMobileOpen(true)} className="lg:hidden" aria-label="Abrir menu"><Menu /></Button>
-          <div className="hidden min-w-0 lg:block"><h1 className="truncate text-base font-bold">{active}</h1><div className="flex items-center gap-1.5 text-xs text-muted-foreground"><span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />Dados atualizados {updated}</div></div>
+          <div className="hidden min-w-0 lg:block"><h1 className="truncate text-base font-bold">{active}</h1><div className="flex items-center gap-1.5 text-xs text-muted-foreground"><span className="h-1.5 w-1.5 rounded-full bg-primary" />Dados atualizados {updated}</div></div>
           <div className="min-w-0 lg:hidden"><p className="truncate text-sm font-bold">81ª SOEA</p><p className="truncate text-[10px] text-muted-foreground">Dados atualizados {updated}</p></div>
           <div className="col-span-3 flex min-w-0 items-center gap-2 overflow-x-auto pt-1 lg:col-span-1 lg:col-start-3 lg:row-start-1 lg:pt-0">
             <div className="flex h-9 shrink-0 items-center rounded-md border bg-background p-0.5">{["Hoje", "24h", "7 dias"].map((p) => <Button key={p} size="sm" variant={period === p ? "secondary" : "ghost"} className="h-7 px-2.5" onClick={() => setPeriod(p)}>{p}</Button>)}
