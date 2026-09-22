@@ -1,4 +1,4 @@
-import type { BiAnswer, ConversationPoint, GeoRanking, Highlight, Kpi, Mention, OfficialContent, PeakSummary, PublisherInsight, Topic } from "@/types/dashboard";
+import type { BiAnswer, ConversationPoint, GeoRanking, Highlight, Kpi, Mention, MonitoringAlert, OfficialContent, PeakSummary, PublisherInsight, Topic } from "@/types/dashboard";
 
 export const kpis: Kpi[] = [
   { label: "Total de menções", value: "8.642", change: "+24%", detail: "ocorrências no período", tone: "blue", info: "Quantidade de ocorrências identificadas no período monitorado." },
@@ -75,8 +75,23 @@ export const publishers: PublisherInsight[] = [
   { name: "Marina Alves", handle: "@marina.eng", platform: "Instagram", value: "284 eng.", sentiment: "Positivo", profile: "Evangelizador" },
   { name: "Paulo Vieira", handle: "@paulovcivil", platform: "Facebook", value: "26 comentários", sentiment: "Negativo", profile: "Agressor" },
 ];
-export const stateRanking: GeoRanking[] = [];
-export const cityRanking: GeoRanking[] = [];
+export const stateRanking: GeoRanking[] = [
+  { label: "Sergipe", value: 3864 }, { label: "São Paulo", value: 1128 }, { label: "Bahia", value: 842 },
+  { label: "Distrito Federal", value: 596 }, { label: "Minas Gerais", value: 438 }, { label: "Pernambuco", value: 324 },
+];
+export const cityRanking: GeoRanking[] = [
+  { label: "Aracaju (SE)", value: 3186 }, { label: "Nossa Senhora do Socorro (SE)", value: 412 }, { label: "São Paulo (SP)", value: 386 },
+  { label: "Brasília (DF)", value: 348 }, { label: "Salvador (BA)", value: 312 }, { label: "Recife (PE)", value: 196 },
+];
+
+export const monitoringAlerts: MonitoringAlert[] = [
+  { id: 1, severity: "Alta", type: "Pico de ocorrências", message: "Inteligência Artificial cresce 280% desde 14h32", detail: "468 ocorrências concentradas em 40 minutos, puxadas pelo painel de IA aplicada à engenharia.", time: "20/09 14h32", topic: "Inteligência Artificial", platform: "Instagram" },
+  { id: 2, severity: "Média", type: "Mudança de sentimento", message: "Alta pontual de sentimento negativo sobre acesso ao evento", detail: "Sentimento negativo sobe 3 p.p. em comentários sobre filas e sinalização de acesso.", time: "20/09 17h01", topic: "Engenharia", platform: "Facebook" },
+  { id: 3, severity: "Média", type: "Novo tema em crescimento", message: "Mobilidade urbana avança 184% nas conversas", detail: "Tema emergente identificado após o painel de cidades inteligentes.", time: "20/09 16h10", topic: "Mobilidade urbana", platform: "X" },
+  { id: 4, severity: "Baixa", type: "Concentração por plataforma", message: "Instagram concentra 42% das ocorrências do período", detail: "Distribuição acima da média histórica do monitoramento, com forte peso de Reels.", time: "20/09 15h20", topic: "Inovação", platform: "Instagram" },
+  { id: 5, severity: "Baixa", type: "Concentração geográfica", message: "Aracaju responde por 3.186 ocorrências", detail: "Cidade-sede lidera o volume, seguida por capitais do Sudeste e Nordeste.", time: "20/09 13h05", topic: "Abertura da SOEA", platform: "Notícias" },
+];
+
 
 export const biAnswers: BiAnswer[] = [
   { question: "Quantas ocorrências tivemos?", answer: "Foram identificadas 8.642 ocorrências no período selecionado." },

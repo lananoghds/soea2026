@@ -11,3 +11,6 @@ export interface PublisherInsight { name: string; handle: string; platform: Excl
 export interface GeoRanking { label: string; value: number; }
 export interface PeakSummary { time: string; day: string; mentions: number; estimatedReach: string; topic: string; }
 export interface BiAnswer { question: string; answer: string; }
+export type AlertSeverity = "Alta" | "Média" | "Baixa";
+export interface MonitoringAlert { id: number; severity: AlertSeverity; type: string; message: string; detail: string; time: string; topic: string; platform: Exclude<Platform, "Todas">; }
+export interface BiChatMessage { id: number; role: "user" | "assistant"; text: string; }
