@@ -7,9 +7,9 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { biAnswers, cityRanking, conversation, dailyOccurrences, emerging, hashtags, highlights, kpis, mentions, monthlyOccurrences, monitoredTags, officialContents, peakSummary, platforms, publishers, sentiment, sentimentByPlatform, serviceOccurrences, stateRanking, topics, vTrackerIndicators } from "@/mocks/dashboard";
 import type { Mention, Platform, Sentiment } from "@/types/dashboard";
 
-const panel = "rounded-lg border bg-card shadow-[0_1px_2px_color-mix(in_oklab,var(--foreground)_5%,transparent)]";
-const sentimentClasses: Record<Sentiment, string> = { Positivo: "bg-emerald-50 text-emerald-700", Neutro: "bg-slate-100 text-slate-600", Negativo: "bg-rose-50 text-rose-700" };
-const number = new Intl.NumberFormat("pt-BR");
+export const panel = "rounded-lg border bg-card shadow-[0_1px_2px_color-mix(in_oklab,var(--foreground)_5%,transparent)]";
+export const sentimentClasses: Record<Sentiment, string> = { Positivo: "bg-emerald-50 text-emerald-700", Neutro: "bg-slate-100 text-slate-600", Negativo: "bg-rose-50 text-rose-700" };
+export const number = new Intl.NumberFormat("pt-BR");
 const platformOptions: Platform[] = ["Todas", "Instagram", "X", "Facebook", "YouTube", "LinkedIn", "TikTok", "Notícias"];
 const infoCopy: Record<string, string> = {
   "Evolução das conversas": "Evolutivo das ocorrências identificadas no período monitorado.",
@@ -28,17 +28,17 @@ const infoCopy: Record<string, string> = {
   "Assistente BI": "Respostas demonstrativas e determinísticas baseadas nos dados exibidos no painel.",
 };
 
-function InfoTip({ label, text }: { label: string; text?: string | undefined }) {
+export function InfoTip({ label, text }: { label: string; text?: string | undefined }) {
   return <TooltipProvider delayDuration={150}><Tooltip><TooltipTrigger asChild><Button variant="ghost" size="icon" className="h-6 w-6 shrink-0 text-muted-foreground" aria-label={`Sobre ${label}`}><HelpCircle className="h-3.5 w-3.5" /></Button></TooltipTrigger><TooltipContent side="top" className="max-w-64 bg-popover text-popover-foreground shadow-md"><p>{text ?? infoCopy[label] ?? "Informação exibida conforme disponibilidade da fonte."}</p></TooltipContent></Tooltip></TooltipProvider>;
 }
 
-function SectionTitle({ title, subtitle, action, info }: { title: string; subtitle?: string | undefined; action?: React.ReactNode; info?: string | undefined }) { return <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 border-b px-5 py-4"><div className="min-w-0"><div className="flex items-center gap-1.5"><h2 className="truncate text-sm font-bold text-foreground">{title}</h2><InfoTip label={title} text={info} /></div>{subtitle && <p className="mt-0.5 text-xs text-muted-foreground">{subtitle}</p>}</div>{action}</div>; }
+export function SectionTitle({ title, subtitle, action, info }: { title: string; subtitle?: string | undefined; action?: React.ReactNode; info?: string | undefined }) { return <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 border-b px-5 py-4"><div className="min-w-0"><div className="flex items-center gap-1.5"><h2 className="truncate text-sm font-bold text-foreground">{title}</h2><InfoTip label={title} text={info} /></div>{subtitle && <p className="mt-0.5 text-xs text-muted-foreground">{subtitle}</p>}</div>{action}</div>; }
 
 function ConversationTooltip({ active, payload }: { active?: boolean; payload?: Array<{ payload: (typeof conversation)[number] }> }) { const item = payload?.[0]?.payload; if (!active || !item) return null; return <div className="rounded-md border bg-popover p-3 text-xs shadow-lg"><p className="font-bold">{item.time} · {item.mentions} ocorrências</p><p className={item.variation >= 0 ? "mt-1 text-emerald-600" : "mt-1 text-destructive"}>{item.variation > 0 ? "+" : ""}{item.variation}% vs. hora anterior</p><p className="mt-2 text-muted-foreground">Assunto principal</p><p className="font-medium">{item.topic}</p></div>; }
 
-function Reading({ children }: { children: React.ReactNode }) { return <div className="mx-5 mb-5 rounded-md bg-muted p-3 text-xs text-muted-foreground"><strong className="text-foreground">Leitura:</strong> {children}</div>; }
+export function Reading({ children }: { children: React.ReactNode }) { return <div className="mx-5 mb-5 rounded-md bg-muted p-3 text-xs text-muted-foreground"><strong className="text-foreground">Leitura:</strong> {children}</div>; }
 
-function MiniRanking({ items, suffix = "" }: { items: Array<{ label: string; value: number }>; suffix?: string }) {
+export function MiniRanking({ items, suffix = "" }: { items: Array<{ label: string; value: number }>; suffix?: string }) {
   if (!items.length) return <div className="rounded-md border border-dashed bg-background p-4 text-xs text-muted-foreground">Dados ainda não disponíveis na fonte. Área preparada para receber os rankings reais quando a integração enviar essas informações.</div>;
   const max = Math.max(...items.map((item) => item.value));
   return <div className="space-y-3">{items.map((item) => <div key={item.label}><div className="mb-1.5 flex justify-between text-xs"><span className="font-medium">{item.label}</span><strong>{number.format(item.value)}{suffix}</strong></div><div className="h-2 overflow-hidden rounded-full bg-muted"><div className="h-full rounded-full bg-primary" style={{ width: `${(item.value / max) * 100}%` }} /></div></div>)}</div>;
