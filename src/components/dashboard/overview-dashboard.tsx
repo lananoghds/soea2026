@@ -28,11 +28,11 @@ const infoCopy: Record<string, string> = {
   "Assistente BI": "Respostas demonstrativas e determinísticas baseadas nos dados exibidos no painel.",
 };
 
-function InfoTip({ label, text }: { label: string; text?: string }) {
+function InfoTip({ label, text }: { label: string; text?: string | undefined }) {
   return <TooltipProvider delayDuration={150}><Tooltip><TooltipTrigger asChild><Button variant="ghost" size="icon" className="h-6 w-6 shrink-0 text-muted-foreground" aria-label={`Sobre ${label}`}><HelpCircle className="h-3.5 w-3.5" /></Button></TooltipTrigger><TooltipContent side="top" className="max-w-64 bg-popover text-popover-foreground shadow-md"><p>{text ?? infoCopy[label] ?? "Informação exibida conforme disponibilidade da fonte."}</p></TooltipContent></Tooltip></TooltipProvider>;
 }
 
-function SectionTitle({ title, subtitle, action, info }: { title: string; subtitle?: string; action?: React.ReactNode; info?: string }) { return <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 border-b px-5 py-4"><div className="min-w-0"><div className="flex items-center gap-1.5"><h2 className="truncate text-sm font-bold text-foreground">{title}</h2><InfoTip label={title} text={info} /></div>{subtitle && <p className="mt-0.5 text-xs text-muted-foreground">{subtitle}</p>}</div>{action}</div>; }
+function SectionTitle({ title, subtitle, action, info }: { title: string; subtitle?: string | undefined; action?: React.ReactNode; info?: string | undefined }) { return <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 border-b px-5 py-4"><div className="min-w-0"><div className="flex items-center gap-1.5"><h2 className="truncate text-sm font-bold text-foreground">{title}</h2><InfoTip label={title} text={info} /></div>{subtitle && <p className="mt-0.5 text-xs text-muted-foreground">{subtitle}</p>}</div>{action}</div>; }
 
 function ConversationTooltip({ active, payload }: { active?: boolean; payload?: Array<{ payload: (typeof conversation)[number] }> }) { const item = payload?.[0]?.payload; if (!active || !item) return null; return <div className="rounded-md border bg-popover p-3 text-xs shadow-lg"><p className="font-bold">{item.time} · {item.mentions} ocorrências</p><p className={item.variation >= 0 ? "mt-1 text-emerald-600" : "mt-1 text-destructive"}>{item.variation > 0 ? "+" : ""}{item.variation}% vs. hora anterior</p><p className="mt-2 text-muted-foreground">Assunto principal</p><p className="font-medium">{item.topic}</p></div>; }
 
