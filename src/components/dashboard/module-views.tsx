@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Area, AreaChart, CartesianGrid, Cell, Pie, PieChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
-import { AlertTriangle, ArrowUpRight, Bot, Flame, Hash, Heart, MapPin, MessageCircle, Minimize2, Search, Send, Sparkles, User, Users, X } from "lucide-react";
+import { AlertTriangle, ArrowUpRight, Bot, Flame, Hash, Heart, MapPin, MessageCircle, Minimize2, Search, Send, Sparkles, TrendingUp, User, Users, X } from "lucide-react";
 import { Conversation, ConversationContent, ConversationScrollButton } from "@/components/ai-elements/conversation";
 import { Message, MessageContent, MessageResponse } from "@/components/ai-elements/message";
 import { PromptInput, PromptInputFooter, PromptInputSubmit, PromptInputTextarea } from "@/components/ai-elements/prompt-input";
