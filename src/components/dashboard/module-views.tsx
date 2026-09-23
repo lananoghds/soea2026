@@ -1,6 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Area, AreaChart, CartesianGrid, Cell, Pie, PieChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
-import { AlertTriangle, ArrowUpRight, Bot, Flame, Hash, Heart, MapPin, MessageCircle, Search, Send, Sparkles, TrendingUp, User, Users } from "lucide-react";
+import { AlertTriangle, ArrowUpRight, Bot, Flame, Hash, Heart, MapPin, MessageCircle, Minimize2, Search, Send, Sparkles, User, Users, X } from "lucide-react";
+import { Conversation, ConversationContent, ConversationScrollButton } from "@/components/ai-elements/conversation";
+import { Message, MessageContent, MessageResponse } from "@/components/ai-elements/message";
+import { PromptInput, PromptInputFooter, PromptInputSubmit, PromptInputTextarea } from "@/components/ai-elements/prompt-input";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -9,7 +12,7 @@ import { answerQuestion, suggestedQuestions } from "@/lib/bi-assistant";
 import { cityRanking, conversation, dailyOccurrences, emerging, hashtags, hashtags as topHashtags, kpis, mentions, monitoredTags, monitoringAlerts, peakSummary, platforms, publishers, sentiment, sentimentByPlatform, serviceOccurrences, stateRanking, topics, vTrackerIndicators } from "@/mocks/dashboard";
 import type { AlertSeverity, BiChatMessage, Platform, Sentiment } from "@/types/dashboard";
 
-function Stat({ label, value, hint }: { label: string; value: string; hint?: string }) {
+function Stat({ label, value, hint }: { label: string; value: string; hint?: string | undefined }) {
   return <article className={`${panel} p-4`}><p className="truncate text-xs font-semibold text-muted-foreground">{label}</p><strong className="mt-2 block text-2xl font-extrabold tabular-nums">{value}</strong>{hint && <p className="mt-1 text-[11px] text-muted-foreground">{hint}</p>}</article>;
 }
 
@@ -197,4 +200,55 @@ export function BiAssistantModule() {
       </div>
     </article>
   </div>;
+}
+
+export function BiAssistantWidget() {
+  const [open, setOpen] = useState(true);
+  const [messages, setMessages] = useState<BiChatMessage[]>([{ id: 1, role: "assistant", text: "Olá! Sou o assistente de BI da 81ª SOEA. Pergunte sobre ocorrências, sentimento, plataformas, assuntos, publicadores, cidades, picos ou alertas." }]);
+  const [draft, setDraft] = useState("");
+  const endRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => { if (open) textareaRef.current?.focus(); }, [open]);
+  useEffect(() => { endRef.current?.scrollIntoView({ block: "end" }); }, [messages, open]);
+
+  const ask = (text: string) => {
+    const value = text.trim();
+    if (!value) return;
+    setMessages((prev) => [...prev, { id: prev.length + 1, role: "user", text: value }, { id: prev.length + 2, role: "assistant", text: answerQuestion(value) }]);
+    setDraft("");
+    window.setTimeout(() => textareaRef.current?.focus(), 0);
+  };
+
+  if (!open) {
+    return <Button type="button" className="fixed bottom-5 right-5 z-50 h-12 rounded-full px-4 shadow-lg" onClick={() => setOpen(true)} aria-label="Abrir Assistente BI"><Bot className="h-4 w-4" />Assistente BI</Button>;
+  }
+
+  return <aside className="fixed bottom-4 right-4 z-50 flex h-[min(680px,calc(100vh-2rem))] w-[calc(100vw-2rem)] max-w-[410px] flex-col rounded-lg border bg-card shadow-xl sm:bottom-5 sm:right-5" aria-label="Assistente BI">
+    <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 border-b p-3">
+      <div className="grid h-9 w-9 place-items-center rounded-md bg-primary text-primary-foreground"><Bot className="h-4 w-4" /></div>
+      <div className="min-w-0"><h2 className="truncate text-sm font-extrabold">Assistente BI</h2><p className="truncate text-[11px] text-muted-foreground">Pergunte sobre os dados da 81ª SOEA</p></div>
+      <div className="flex items-center gap-1"><Button type="button" variant="ghost" size="icon" className="h-8 w-8" onClick={() => setOpen(false)} aria-label="Minimizar Assistente BI"><Minimize2 className="h-4 w-4" /></Button><Button type="button" variant="ghost" size="icon" className="h-8 w-8" onClick={() => setMessages([{ id: 1, role: "assistant", text: "Chat reiniciado. Pode perguntar sobre ocorrências, sentimento, plataformas, assuntos, publicadores, cidades, picos ou alertas." }])} aria-label="Limpar conversa"><X className="h-4 w-4" /></Button></div>
+    </div>
+    <Conversation className="min-h-0 flex-1">
+      <ConversationContent className="gap-4 p-4">
+        {messages.map((message) => <Message key={message.id} from={message.role} className="max-w-full">
+          <MessageContent className={message.role === "user" ? "bg-primary text-primary-foreground" : "max-w-[92%]"}>
+            <MessageResponse>{message.text}</MessageResponse>
+          </MessageContent>
+        </Message>)}
+        <div ref={endRef} />
+      </ConversationContent>
+      <ConversationScrollButton className="bottom-3" />
+    </Conversation>
+    <div className="border-t p-3">
+      <div className="mb-2 flex gap-2 overflow-x-auto pb-1">{suggestedQuestions.slice(0, 4).map((question) => <Button key={question} type="button" variant="outline" size="sm" className="h-7 shrink-0 text-[11px]" onClick={() => ask(question)}>{question}</Button>)}</div>
+      <PromptInput onSubmit={(message) => ask(message.text)}>
+        <PromptInputTextarea ref={textareaRef} value={draft} onChange={(event) => setDraft(event.currentTarget.value)} placeholder="Pergunte algo sobre os dados" className="min-h-14 text-sm" />
+        <PromptInputFooter className="justify-end">
+          <PromptInputSubmit disabled={!draft.trim()} aria-label="Enviar pergunta"><Send className="h-4 w-4" /></PromptInputSubmit>
+        </PromptInputFooter>
+      </PromptInput>
+    </div>
+  </aside>;
 }
