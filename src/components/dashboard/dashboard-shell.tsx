@@ -1,17 +1,18 @@
 import { useState } from "react";
-import { Activity, Bell, CalendarDays, FileBarChart, Hash, LayoutDashboard, Menu, MessageSquareText, Network, RefreshCw, Search, ShieldCheck, SlidersHorizontal, X } from "lucide-react";
+import { Activity, Bell, CalendarDays, Hash, LayoutDashboard, Menu, MessageSquareText, Network, RefreshCw, ShieldCheck, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import type { Platform } from "@/types/dashboard";
 import { OverviewDashboard } from "./overview-dashboard";
+import { AlertsModule, BiAssistantWidget, ConversationsModule, PlatformsModule, SentimentModule, TopicsModule } from "./module-views";
 import soeaLogo from "@/assets/Logo_Soea_Colorida.png.asset.json";
 
 const navigation = [
   { label: "Visão Geral", icon: LayoutDashboard }, { label: "Conversas", icon: MessageSquareText }, { label: "Sentimento", icon: Activity },
-  { label: "Assuntos", icon: Hash }, { label: "Conteúdos", icon: FileBarChart }, { label: "Plataformas", icon: Network }, { label: "Alertas", icon: Bell, count: 4 },
+  { label: "Assuntos", icon: Hash }, { label: "Plataformas", icon: Network }, { label: "Alertas", icon: Bell, count: 5 },
 ];
-const platforms: Platform[] = ["Todas", "Instagram", "X", "Facebook", "YouTube", "LinkedIn", "Notícias"];
+const platforms: Platform[] = ["Todas", "Instagram", "X", "Facebook", "YouTube", "LinkedIn", "TikTok", "Notícias"];
 
 function Brand() {
   return <div className="flex min-w-0 items-center gap-3">
@@ -28,6 +29,16 @@ export function DashboardShell() {
   const [refreshing, setRefreshing] = useState(false);
   const [updated, setUpdated] = useState("há 3 minutos");
   const refresh = () => { setRefreshing(true); window.setTimeout(() => { setRefreshing(false); setUpdated("agora"); }, 700); };
+
+  const renderContent = () => {
+    if (active === "Visão Geral") return <OverviewDashboard platform={platform} />;
+    if (active === "Conversas") return <ConversationsModule platform={platform} />;
+    if (active === "Sentimento") return <SentimentModule />;
+    if (active === "Assuntos") return <TopicsModule />;
+    if (active === "Plataformas") return <PlatformsModule />;
+    if (active === "Alertas") return <AlertsModule />;
+    return <OverviewDashboard platform={platform} />;
+  };
 
   const sidebar = <>
     <div className="border-b border-sidebar-border px-5 py-5"><Brand /></div>
@@ -53,7 +64,8 @@ export function DashboardShell() {
           </div>
         </div>
       </header>
-      <main className="p-4 lg:p-7">{active === "Visão Geral" ? <OverviewDashboard platform={platform} /> : <section className="flex min-h-[70vh] items-center justify-center"><div className="max-w-md text-center"><div className="mx-auto grid h-14 w-14 place-items-center rounded-md bg-accent text-primary"><Search className="h-6 w-6" /></div><h2 className="mt-4 text-xl font-bold">{active}</h2><p className="mt-2 text-sm text-muted-foreground">Módulo preparado para receber os dados detalhados de {active.toLowerCase()} na próxima etapa da integração.</p><Button variant="outline" className="mt-5" onClick={() => setActive("Visão Geral")}><SlidersHorizontal />Voltar à visão geral</Button></div></section>}</main>
+      <main className="p-4 pb-28 lg:p-7 lg:pb-28">{renderContent()}</main>
     </div>
+    <BiAssistantWidget />
   </div>;
 }
