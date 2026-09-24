@@ -902,7 +902,7 @@ export function BiAssistantModule() {
 }
 
 export function BiAssistantWidget() {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<BiChatMessage[]>([
     {
       id: 1,
