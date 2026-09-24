@@ -8,9 +8,16 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "81ª SOEA" },
-      { name: "description", content: "Painel executivo de social listening, sentimento e performance digital da 81ª SOEA em Sergipe." },
+      {
+        name: "description",
+        content:
+          "Painel executivo de social listening, sentimento e performance digital da 81ª SOEA em Sergipe.",
+      },
       { property: "og:title", content: "81ª SOEA" },
-      { property: "og:description", content: "Social Listening e Performance Digital da 81ª SOEA." },
+      {
+        property: "og:description",
+        content: "Social Listening e Performance Digital da 81ª SOEA.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
