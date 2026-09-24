@@ -49,11 +49,11 @@ export const sentiment = [{ name: "Positivo", value: 72, change: "+4 p.p." }, { 
 export const sentimentByPlatform = [{ platform: "Instagram", positive: 76, neutral: 18, negative: 6 }, { platform: "X", positive: 61, neutral: 27, negative: 12 }, { platform: "Facebook", positive: 68, neutral: 20, negative: 12 }, { platform: "LinkedIn", positive: 84, neutral: 13, negative: 3 }];
 
 export const mentions: Mention[] = [
-  { id: 1, author: "Marina Alves", handle: "@marina.eng", initials: "MA", platform: "Instagram", time: "há 4 min", publishedAt: "20/09 17h41", text: "A discussão sobre IA aplicada à engenharia pública na 81ª SOEA trouxe exemplos muito concretos para Sergipe. Excelente programação!", sentiment: "Positivo", engagement: 284, comments: 42, topic: "Inteligência Artificial" },
-  { id: 2, author: "CREA Sergipe", handle: "@creasergipe", initials: "CS", platform: "X", time: "há 9 min", publishedAt: "20/09 17h36", text: "Sustentabilidade e infraestrutura resiliente no centro do debate. A engenharia brasileira reunida em Aracaju para construir caminhos.", sentiment: "Positivo", engagement: 516, comments: 68, rts: 112, topic: "Sustentabilidade" },
-  { id: 3, author: "Rafael Mendonça", handle: "@rafael_agro", initials: "RM", platform: "LinkedIn", time: "há 18 min", publishedAt: "20/09 17h27", text: "O painel sobre inovação no campo mostrou como dados e agronomia já transformam a produção com responsabilidade ambiental.", sentiment: "Positivo", engagement: 198, comments: 31, topic: "Inovação" },
-  { id: 4, author: "Notícias SE", handle: "@noticiasse", initials: "NS", platform: "Notícias", time: "há 31 min", publishedAt: "20/09 17h14", text: "Movimento intenso no entorno do centro de convenções durante a programação da 81ª SOEA nesta tarde.", sentiment: "Neutro", engagement: 91, comments: 12, topic: "Infraestrutura" },
-  { id: 5, author: "Paulo Vieira", handle: "@paulovcivil", initials: "PV", platform: "Facebook", time: "há 44 min", publishedAt: "20/09 17h01", text: "A fila para uma das palestras poderia ter melhor sinalização, apesar da qualidade do conteúdo apresentado.", sentiment: "Negativo", engagement: 74, comments: 26, topic: "Engenharia" },
+  { id: 1, author: "Marina Alves", handle: "@marina.eng", initials: "MA", platform: "Instagram", time: "há 4 min", publishedAt: "20/09 17h41", text: "A discussão sobre IA aplicada à engenharia pública na 81ª SOEA trouxe exemplos muito concretos para Sergipe. Excelente programação!", sentiment: "Positivo", engagement: 284, comments: 42, topic: "Inteligência Artificial", url: "https://www.instagram.com/confea/" },
+  { id: 2, author: "CREA Sergipe", handle: "@creasergipe", initials: "CS", platform: "X", time: "há 9 min", publishedAt: "20/09 17h36", text: "Sustentabilidade e infraestrutura resiliente no centro do debate. A engenharia brasileira reunida em Aracaju para construir caminhos.", sentiment: "Positivo", engagement: 516, comments: 68, rts: 112, topic: "Sustentabilidade", url: "https://x.com/creasergipe" },
+  { id: 3, author: "Rafael Mendonça", handle: "@rafael_agro", initials: "RM", platform: "LinkedIn", time: "há 18 min", publishedAt: "20/09 17h27", text: "O painel sobre inovação no campo mostrou como dados e agronomia já transformam a produção com responsabilidade ambiental.", sentiment: "Positivo", engagement: 198, comments: 31, topic: "Inovação", url: "https://www.linkedin.com/company/confea/" },
+  { id: 4, author: "Notícias SE", handle: "@noticiasse", initials: "NS", platform: "Notícias", time: "há 31 min", publishedAt: "20/09 17h14", text: "Movimento intenso no entorno do centro de convenções durante a programação da 81ª SOEA nesta tarde.", sentiment: "Neutro", engagement: 91, comments: 12, topic: "Infraestrutura", url: "https://www.confea.org.br/" },
+  { id: 5, author: "Paulo Vieira", handle: "@paulovcivil", initials: "PV", platform: "Facebook", time: "há 44 min", publishedAt: "20/09 17h01", text: "A fila para uma das palestras poderia ter melhor sinalização, apesar da qualidade do conteúdo apresentado.", sentiment: "Negativo", engagement: 74, comments: 26, topic: "Engenharia", url: "https://www.facebook.com/confea" },
 ];
 
 export const officialContents: OfficialContent[] = [
@@ -65,9 +65,9 @@ export const officialContents: OfficialContent[] = [
 ];
 
 export const highlights: Highlight[] = [
-  { author: "Confea", platform: "Instagram", excerpt: "A engenharia que transforma o Brasil está reunida em Sergipe.", estimatedReach: "428 mil", engagement: "32,8 mil", comments: "1.240", sentiment: "Positivo" },
-  { author: "Portal Engenharia", platform: "X", excerpt: "IA, cidades e clima dominam a agenda da 81ª SOEA.", estimatedReach: "286 mil", engagement: "18,2 mil", comments: "730", rts: "2.870", sentiment: "Positivo" },
-  { author: "Agro em Foco", platform: "YouTube", excerpt: "O futuro da agronomia passa por dados e sustentabilidade.", estimatedReach: "174 mil", engagement: "9,6 mil", comments: "410", sentiment: "Positivo" },
+  { author: "Confea", platform: "Instagram", excerpt: "A engenharia que transforma o Brasil está reunida em Sergipe.", estimatedReach: "428 mil", engagement: "32,8 mil", comments: "1.240", sentiment: "Positivo", url: "https://www.instagram.com/confea/" },
+  { author: "Portal Engenharia", platform: "X", excerpt: "IA, cidades e clima dominam a agenda da 81ª SOEA.", estimatedReach: "286 mil", engagement: "18,2 mil", comments: "730", rts: "2.870", sentiment: "Positivo", url: "https://x.com/Confea" },
+  { author: "Agro em Foco", platform: "YouTube", excerpt: "O futuro da agronomia passa por dados e sustentabilidade.", estimatedReach: "174 mil", engagement: "9,6 mil", comments: "410", sentiment: "Positivo", url: "https://www.youtube.com/@Confea" },
 ];
 
 export const publishers: PublisherInsight[] = [

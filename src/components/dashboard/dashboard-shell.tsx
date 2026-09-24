@@ -13,13 +13,6 @@ import {
   X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import type { Platform } from "@/types/dashboard";
 import { OverviewDashboard } from "./overview-dashboard";
@@ -31,7 +24,7 @@ import {
   SentimentModule,
   TopicsModule,
 } from "./module-views";
-import soeaLogo from "@/assets/Logo_Soea_Colorida.png.asset.json";
+import soeaProfile from "@/assets/soea-profile.jpg.asset.json";
 
 const navigation = [
   { label: "Visão Geral", icon: LayoutDashboard },
@@ -41,22 +34,11 @@ const navigation = [
   { label: "Plataformas", icon: Network },
   { label: "Alertas", icon: Bell, count: 5 },
 ];
-const platforms: Platform[] = [
-  "Todas",
-  "Instagram",
-  "X",
-  "Facebook",
-  "YouTube",
-  "LinkedIn",
-  "TikTok",
-  "Notícias",
-];
-
 function Brand() {
   return (
     <div className="flex min-w-0 items-center gap-3">
-      <div className="grid h-14 w-16 shrink-0 place-items-center rounded-md bg-card p-1">
-        <img src={soeaLogo.url} alt="81ª SOEA" className="h-full w-full object-contain" />
+      <div className="h-14 w-16 shrink-0 overflow-hidden rounded-md bg-primary">
+        <img src={soeaProfile.url} alt="81ª SOEA" className="h-full w-full object-cover" />
       </div>
       <div className="min-w-0">
         <p className="truncate text-sm font-extrabold text-foreground sm:text-base">81ª SOEA</p>
@@ -72,7 +54,7 @@ export function DashboardShell() {
   const [active, setActive] = useState("Visão Geral");
   const [mobileOpen, setMobileOpen] = useState(false);
   const [period, setPeriod] = useState("24h");
-  const [platform, setPlatform] = useState<Platform>("Todas");
+  const platform: Platform = "Todas";
   const [refreshing, setRefreshing] = useState(false);
   const [updated, setUpdated] = useState("há 3 minutos");
   const refresh = () => {
@@ -228,18 +210,6 @@ export function DashboardShell() {
                   </PopoverContent>
                 </Popover>
               </div>
-              <Select value={platform} onValueChange={(v) => setPlatform(v as Platform)}>
-                <SelectTrigger className="w-36 shrink-0 bg-background">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {platforms.map((p) => (
-                    <SelectItem key={p} value={p}>
-                      {p}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
               <Button onClick={refresh} disabled={refreshing} className="shrink-0">
                 <RefreshCw className={refreshing ? "animate-spin" : ""} />
                 <span className="hidden xl:inline">Atualizar dados</span>
