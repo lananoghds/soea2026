@@ -8,3 +8,5 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- TV presentation is an opt-in horizontal carousel that auto-activates only for TV-like displays or `?presentation=tv`; normal notebook and mobile layouts remain vertically navigable.

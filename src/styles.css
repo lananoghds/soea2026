@@ -146,3 +146,54 @@
     text-rendering: optimizeLegibility;
   }
 }
+
+@layer components {
+  .tv-presentation-track {
+    display: flex;
+    width: 100%;
+    max-width: none;
+    height: calc(100dvh - 7.5rem);
+    gap: 1.25rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    scrollbar-color: var(--color-primary) var(--color-muted);
+    scrollbar-width: thin;
+  }
+
+  .tv-presentation-track > * {
+    flex: 0 0 calc(100vw - 20rem);
+    min-width: 0;
+    height: 100%;
+    overflow-y: auto;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+}
+
+@media (max-width: 1023px) {
+  .tv-presentation-track {
+    display: block;
+    height: auto;
+    overflow: visible;
+  }
+
+  .tv-presentation-track > * {
+    width: auto;
+    height: auto;
+    margin-top: 1.25rem;
+    overflow: visible;
+  }
+
+  .tv-presentation-track > :first-child {
+    margin-top: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tv-presentation-track {
+    scroll-behavior: auto;
+  }
+}

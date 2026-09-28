@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   ArrowDown,
   ArrowUp,
@@ -244,11 +244,18 @@ function PublicationButton({ mention }: { mention: Pick<Mention, "url" | "author
   );
 }
 
-export function OverviewDashboard({ platform }: { platform: Platform }) {
+export function OverviewDashboard({
+  platform,
+  presentationMode = false,
+}: {
+  platform: Platform;
+  presentationMode?: boolean;
+}) {
   const [mentionPlatform, setMentionPlatform] = useState<Platform>("Todas");
   const [mentionSentiment, setMentionSentiment] = useState<Sentiment | "Todos">("Todos");
   const [topic, setTopic] = useState("Todos");
   const [sort, setSort] = useState("recent");
+  const presentationRef = useRef<HTMLDivElement>(null);
   const effectivePlatform = platform !== "Todas" ? platform : mentionPlatform;
   const filtered = useMemo(
     () =>
@@ -272,9 +279,41 @@ export function OverviewDashboard({ platform }: { platform: Platform }) {
       ? `${topPlatform.name} concentra a maior parte das ocorrências no período.`
       : `${platform} está selecionado no filtro global.`;
 
+  useEffect(() => {
+    const track = presentationRef.current;
+    if (!presentationMode || !track) return;
+
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let currentSlide = 0;
+    track.scrollTo({ left: 0, behavior: "auto" });
+
+    const timer = window.setInterval(() => {
+      const slides = Array.from(track.children) as HTMLElement[];
+      if (!slides.length || document.hidden) return;
+      currentSlide = (currentSlide + 1) % slides.length;
+      const nextSlide = slides[currentSlide];
+      if (!nextSlide) return;
+      track.scrollTo({
+        left: nextSlide.offsetLeft - track.offsetLeft,
+        behavior: prefersReducedMotion ? "auto" : "smooth",
+      });
+    }, 11000);
+
+    return () => window.clearInterval(timer);
+  }, [presentationMode]);
+
   return (
-    <div className="mx-auto max-w-[1600px] space-y-5">
-      <div className="grid grid-cols-[minmax(0,1fr)_auto] items-end gap-4">
+    <div
+      ref={presentationRef}
+      className={
+        presentationMode
+          ? "tv-presentation-track"
+          : "mx-auto max-w-[1600px] space-y-5"
+      }
+      aria-label={presentationMode ? "Apresentação automática dos painéis" : undefined}
+    >
+      <div className="space-y-5">
+        <div className="grid grid-cols-[minmax(0,1fr)_auto] items-end gap-4">
         <div>
           <p className="text-xs font-semibold uppercase text-primary">Painel executivo</p>
           <h1 className="mt-1 text-2xl font-extrabold sm:text-3xl">81ª SOEA</h1>
@@ -287,9 +326,9 @@ export function OverviewDashboard({ platform }: { platform: Platform }) {
           <Radio className="h-4 w-4 text-primary" />
           Monitoramento ativo
         </div>
-      </div>
+        </div>
 
-      <section className="grid grid-cols-2 gap-3 xl:grid-cols-6">
+        <section className="grid grid-cols-2 gap-3 xl:grid-cols-6">
         {kpis.map((kpi) => (
           <article key={kpi.label} className={`${panel} min-w-0 p-4`}>
             <div className="flex items-center justify-between gap-2">
@@ -314,9 +353,9 @@ export function OverviewDashboard({ platform }: { platform: Platform }) {
             <p className="mt-1 min-h-8 text-[11px] leading-4 text-muted-foreground">{kpi.detail}</p>
           </article>
         ))}
-      </section>
+        </section>
 
-      <section className="grid gap-3 md:grid-cols-5">
+        <section className="grid gap-3 md:grid-cols-5">
         {vTrackerIndicators.map((item) => (
           <article key={item.label} className={`${panel} p-4`}>
             <div className="flex items-center justify-between gap-2">
@@ -326,10 +365,11 @@ export function OverviewDashboard({ platform }: { platform: Platform }) {
             <strong className="mt-2 block text-xl font-extrabold tabular-nums">{item.value}</strong>
           </article>
         ))}
-      </section>
+        </section>
+      </div>
 
       <section className="grid gap-5 xl:grid-cols-[minmax(0,2fr)_minmax(300px,0.8fr)]">
-        <article className={panel}>
+        <article className={`${panel} min-w-0`}>
           <SectionTitle
             title="Evolução das conversas"
             subtitle="Volume de ocorrências ao longo do tempo"
@@ -539,7 +579,7 @@ export function OverviewDashboard({ platform }: { platform: Platform }) {
       </section>
 
       <section className="grid gap-5 xl:grid-cols-[minmax(0,1.45fr)_minmax(320px,0.7fr)]">
-        <article className={panel}>
+        <article className={`${panel} min-w-0`}>
           <SectionTitle title="Últimas menções" subtitle="Feed consolidado de social listening" />
           <div className="flex gap-2 overflow-x-auto border-b p-3">
             <Select
@@ -660,7 +700,7 @@ export function OverviewDashboard({ platform }: { platform: Platform }) {
             )}
           </div>
         </article>
-        <div className="space-y-5">
+        <div className="min-w-0 space-y-5">
           <article className={panel}>
             <SectionTitle title="Picos de conversa" subtitle="Momentos-chave do dia" />{" "}
             <div className="space-y-5 p-5">
@@ -969,7 +1009,8 @@ export function OverviewDashboard({ platform }: { platform: Platform }) {
         </article>
       </section>
 
-      <section className="grid gap-5 md:grid-cols-3">
+      <div className="space-y-5">
+        <section className="grid gap-5 md:grid-cols-3">
         <article className={panel}>
           <SectionTitle
             title="Ocorrências por dia"
@@ -1000,12 +1041,13 @@ export function OverviewDashboard({ platform }: { platform: Platform }) {
             <MiniRanking items={serviceOccurrences} suffix="%" />
           </div>
         </article>
-      </section>
+        </section>
 
-      <footer className="flex flex-wrap items-center justify-between gap-2 border-t px-1 py-4 text-xs text-muted-foreground">
-        <span className="font-semibold text-foreground">Fonte: V-Tracker</span>
-        <span>Última sincronização: 14:45</span>
-      </footer>
+        <footer className="flex flex-wrap items-center justify-between gap-2 border-t px-1 py-4 text-xs text-muted-foreground">
+          <span className="font-semibold text-foreground">Fonte: V-Tracker</span>
+          <span>Última sincronização: 14:45</span>
+        </footer>
+      </div>
     </div>
   );
 }

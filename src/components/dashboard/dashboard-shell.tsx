@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Activity,
   Bell,
@@ -7,6 +7,7 @@ import {
   LayoutDashboard,
   Menu,
   MessageSquareText,
+  MonitorPlay,
   Network,
   RefreshCw,
   ShieldCheck,
@@ -57,6 +58,16 @@ export function DashboardShell() {
   const platform: Platform = "Todas";
   const [refreshing, setRefreshing] = useState(false);
   const [updated, setUpdated] = useState("há 3 minutos");
+  const [presentationMode, setPresentationMode] = useState(false);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const tvUserAgent = /smart-tv|smarttv|hbbtv|tizen|web0s|netcast|viera|bravia/i.test(
+      window.navigator.userAgent,
+    );
+    const tvDisplay = window.matchMedia("(min-width: 1800px) and (min-height: 900px)").matches;
+    setPresentationMode(params.get("presentation") === "tv" || tvUserAgent || tvDisplay);
+  }, []);
   const refresh = () => {
     setRefreshing(true);
     window.setTimeout(() => {
@@ -66,7 +77,8 @@ export function DashboardShell() {
   };
 
   const renderContent = () => {
-    if (active === "Visão Geral") return <OverviewDashboard platform={platform} />;
+    if (active === "Visão Geral")
+      return <OverviewDashboard platform={platform} presentationMode={presentationMode} />;
     if (active === "Conversas") return <ConversationsModule platform={platform} />;
     if (active === "Sentimento") return <SentimentModule />;
     if (active === "Assuntos") return <TopicsModule />;
@@ -214,10 +226,28 @@ export function DashboardShell() {
                 <RefreshCw className={refreshing ? "animate-spin" : ""} />
                 <span className="hidden xl:inline">Atualizar dados</span>
               </Button>
+              <Button
+                type="button"
+                variant={presentationMode ? "secondary" : "outline"}
+                className="hidden shrink-0 lg:inline-flex"
+                onClick={() => setPresentationMode((current) => !current)}
+                aria-pressed={presentationMode}
+              >
+                <MonitorPlay />
+                {presentationMode ? "Sair do modo TV" : "Modo TV"}
+              </Button>
             </div>
           </div>
         </header>
-        <main className="p-4 pb-28 lg:p-7 lg:pb-28">{renderContent()}</main>
+        <main
+          className={
+            presentationMode
+              ? "overflow-hidden p-4 pb-6 lg:p-7 lg:pb-6"
+              : "p-4 pb-28 lg:p-7 lg:pb-28"
+          }
+        >
+          {renderContent()}
+        </main>
       </div>
       <BiAssistantWidget />
     </div>
