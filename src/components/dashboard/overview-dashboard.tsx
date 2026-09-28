@@ -369,7 +369,7 @@ export function OverviewDashboard({
       </div>
 
       <section className="grid gap-5 xl:grid-cols-[minmax(0,2fr)_minmax(300px,0.8fr)]">
-        <article className={panel}>
+        <article className={`${panel} min-w-0`}>
           <SectionTitle
             title="Evolução das conversas"
             subtitle="Volume de ocorrências ao longo do tempo"

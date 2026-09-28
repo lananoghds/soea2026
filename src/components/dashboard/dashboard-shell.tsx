@@ -65,9 +65,7 @@ export function DashboardShell() {
     const tvUserAgent = /smart-tv|smarttv|hbbtv|tizen|web0s|netcast|viera|bravia/i.test(
       window.navigator.userAgent,
     );
-    const tvDisplay = window.matchMedia(
-      "(min-width: 1800px) and (min-height: 900px) and ((any-pointer: coarse) or (hover: none))",
-    ).matches;
+    const tvDisplay = window.matchMedia("(min-width: 1800px) and (min-height: 900px)").matches;
     setPresentationMode(params.get("presentation") === "tv" || tvUserAgent || tvDisplay);
   }, []);
   const refresh = () => {
