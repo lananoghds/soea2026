@@ -579,7 +579,7 @@ export function OverviewDashboard({
       </section>
 
       <section className="grid gap-5 xl:grid-cols-[minmax(0,1.45fr)_minmax(320px,0.7fr)]">
-        <article className={panel}>
+        <article className={`${panel} min-w-0`}>
           <SectionTitle title="Últimas menções" subtitle="Feed consolidado de social listening" />
           <div className="flex gap-2 overflow-x-auto border-b p-3">
             <Select
@@ -700,7 +700,7 @@ export function OverviewDashboard({
             )}
           </div>
         </article>
-        <div className="space-y-5">
+        <div className="min-w-0 space-y-5">
           <article className={panel}>
             <SectionTitle title="Picos de conversa" subtitle="Momentos-chave do dia" />{" "}
             <div className="space-y-5 p-5">
