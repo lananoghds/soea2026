@@ -313,7 +313,7 @@ export function SentimentModule() {
         title="Sentimento"
         description="Análise aprofundada de polaridade das conversas, por plataforma, assunto e tags monitoradas."
       />
-      <section className="grid grid-cols-3 gap-3">
+      <section className="grid gap-3 sm:grid-cols-3">
         {sentiment
           .map((s, i) => (
             <Stat

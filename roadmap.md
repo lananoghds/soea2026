@@ -11,3 +11,5 @@
 - [x] Add direct publication links to recent and highlighted mentions
 - [x] Use the supplied orange 81ª SOEA image as the application brand avatar
 - [x] Simplify the source footer to V-Tracker and the last synchronization time
+- [ ] Add an automatic looping TV presentation mode without affecting normal navigation
+- [ ] Verify TV, notebook, and mobile layouts
